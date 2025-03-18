@@ -8,7 +8,6 @@ The implementation incorporates state-of-the-art techniques from research in rei
 
 ## Features
 
-- **Modular Multi-Agent Architecture**: Flexible design with specialized agents for different attack types and a decision-maker agent for final classification
 - **DQN-based Implementation**: Deep Q-Network (DQN) implementation with important enhancements
 - **Temporal Feature Stacking**: Combines consecutive time frames to capture temporal patterns in network traffic
 - **Prioritized Experience Replay**: Optimizes learning by focusing on important transitions
@@ -147,8 +146,8 @@ Comprehensive evaluation metrics including:
 ## Performance
 
 When properly trained, the model achieves:
-- Overall accuracy of approximately 99% on the CICIDS2017 dataset
-- False positive rate of less than 0.2%
+- Overall accuracy of approximately x% on the CICIDS2017 dataset
+- False positive rate of less than y%
 - Effective detection of both common and rare attack types
 - Robust handling of class imbalance issues
 
