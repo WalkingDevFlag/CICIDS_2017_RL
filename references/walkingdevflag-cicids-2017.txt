@@ -1,0 +1,1249 @@
+Directory structure:
+└── walkingdevflag-cicids-2017/
+    ├── README.md
+    ├── CICIDS_Dataset.ipynb
+    ├── Conda Env.txt
+    ├── LICENSE
+    ├── Models/
+    │   ├── CNN/
+    │   │   ├── cnn_model_best.keras
+    │   │   └── final_cnn_model.h5
+    │   ├── DNN_BC/
+    │   │   └── DNN_BC.h5
+    │   ├── DNN_MC/
+    │   │   └── DNN_MC.h5
+    │   ├── Decision Tree/
+    │   │   └── decision_tree_model.joblib
+    │   ├── KNN/
+    │   │   └── knn_model.joblib
+    │   ├── Logistic Regression/
+    │   │   ├── logistic_regression_model.joblib
+    │   │   └── logistic_regression_model.pkl
+    │   ├── MLP/
+    │   │   └── mlp_model.pkl
+    │   ├── Random Forest/
+    │   │   └── random_forest_model.joblib
+    │   └── SVM/
+    │       └── svm_model.joblib
+    └── src/
+        ├── 1) Dataset.ipynb
+        ├── 2) Processing.ipynb
+        ├── 3.1) Machine Learning Algorithms (Binary Classification).ipynb
+        ├── 3.2) Machine Learning Algorithms (Multi-Class Classification).ipynb.ipynb
+        ├── 4.1) DNN_BC.ipynb
+        ├── 4.2) DNN_MC.ipynb
+        ├── 4.3) DNN_BC_Better.ipynb
+        ├── 4.4) DNN_MC_Better.ipynb
+        ├── 5) MLP.ipynb
+        └── 6) CNN_MC.ipynb
+
+================================================
+File: README.md
+================================================
+# CICIDS 2017 Repository
+
+## Overview
+This repository contains Jupyter notebooks designed for analyzing the CICIDS 2017 dataset, which focuses on intrusion detection. The notebooks provide a comprehensive framework for data exploration, preprocessing, and machine learning model training.
+
+## Features
+- **Dataset Download**: Automates the retrieval of the CICIDS 2017 dataset.
+- **Exploratory Data Analysis (EDA)**: Provides insights into data distributions and patterns.
+- **Model Training**:
+  - **Binary Classification**: Logistic Regression and Support Vector Machine.
+  - **Multi-Class Classification**: K-Nearest Neighbors, Random Forest, Decision Tree.
+  - **Deep Learning**: Multi-Layer Perceptron, Convolutional Neural Network, Deep Neural Network for both binary and multi-class tasks.
+
+## Usage
+Clone the repository and open the Jupyter notebooks to start analyzing the dataset. Follow the instructions within each notebook to execute the code and interpret the results.
+
+## Setting Up the Conda Environment
+To set up a Conda environment for working with the CICIDS 2017 dataset, follow these steps:
+
+1. **Create a new Conda environment**:
+   ```bash
+   conda create -n cicids python=3.9
+   ```
+
+2. **Activate the environment**:
+   ```bash
+   conda activate cicids
+   ```
+
+3. **Install necessary libraries**:
+   ```bash
+   pip install numpy pandas seaborn matplotlib scikit-learn tensorflow
+   ```
+
+4. **Install additional packages**:
+   ```bash
+   pip install missingno imbalanced-learn wget
+   ```
+
+5. **Install Jupyter Notebook**:
+   ```bash
+   pip install jupyter notebook
+   ```
+
+6. **Install IPython kernel for Jupyter**:
+   ```bash
+   pip install ipykernel
+   ```
+
+7. **Add the Conda environment to Jupyter Notebook**:
+   ```bash
+   python -m ipykernel install --user --name=cicids
+   ```
+
+## Requirements
+Ensure you have the necessary libraries installed, such as `pandas`, `numpy`, `seaborn`, `missingno`, `imbalanced-learn`, `scikit-learn`, and `tensorflow` or `keras` for deep learning models.
+
+## References
+1. **CICIDS Dataset**: [CICIDS 2017 Machine Learning Repository](https://github.com/djh-sudo/CICIDS2017-Machine-Learning/blob/main/README.md)
+2. **Data Preprocessing**: [Data Preprocessing Notebook](https://github.com/liangyihuai/CICIDS2017_data_processing/blob/master/data_preprocessing_liang.ipynb)
+3. **DNN and Preprocessing**: [DNN and Preprocessing Repository](https://github.com/fabian692/DNN-and-preprocessing-cicids-2017)
+4. **Intrusion Detection**: [Intrusion Detection Notebook](https://github.com/noushinpervez/Intrusion-Detection-CICIDS2017/blob/main/Intrusion-Detection-CIC-IDS2017.ipynb)
+5. **Dataset Preprocessing**: [CICIDS 2017 ML Preprocessing](https://github.com/mahendradata/cicids2017-ml)
+6. **Autoencoder**: [Autoencoder Model for CICIDS 2017](https://github.com/fasial634/Autoencoder-model-for-CICIDS-2017-/blob/main/Autoencoder.ipynb)
+7. **Data Cleaning and Random Forest**: [CICIDS 2017 Data Cleaning](https://github.com/Moetezafif-git/cicids2017)
+
+## License
+This project is licensed under the MIT License.
+
+
+================================================
+File: Conda Env.txt
+================================================
+Conda Env:
+
+1) conda create -n cicids python=3.9
+
+2) conda activate cicids
+
+3) pip install install numpy pandas seaborn matplotlib scikit-learn tensorflow
+
+4) pip install missingno imbalanced-learn wget
+
+5) pip install jupyter notebook
+
+6) pip install ipykernel
+
+7) python -m ipykernel install --user --name=cicids
+
+
+
+================================================
+File: LICENSE
+================================================
+MIT License
+
+Copyright (c) 2024 Siddharth Panditrao
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+
+================================================
+File: src/1) Dataset.ipynb
+================================================
+# Jupyter notebook converted to Python script.
+
+"""
+# **Downloading the Dataset**
+The description of CICIDS2017 dataset is accessible at https://www.unb.ca/cic/datasets/ids-2017.html
+
+There are three versions available:
+
+1.   Raw network captured data (PCAPs),
+2.   Generated Labelled Flows, and
+3.   Machine Learning CSV.
+
+In this notebook, we will download the `MachineLearningCSV.zip` version of this dataset.
+
+When downloading this dataset, we rename the `MachineLearningCSV.zip` file to `MachineLearningCVE.zip` because in the `MachineLearningCSV.md5` the target filename is `MachineLearningCVE.zip`.
+"""
+
+!wget -nc -O MachineLearningCVE.zip http://205.174.165.80/CICDataset/CIC-IDS-2017/Dataset/CIC-IDS-2017/CSVs/MachineLearningCSV.zip
+
+# Download MachineLearningCSV.md5 file to check the integrity of the downloaded file.
+!wget -nc http://205.174.165.80/CICDataset/CIC-IDS-2017/Dataset/CIC-IDS-2017/CSVs/MachineLearningCSV.md5
+
+# Checking the file integrity.
+!md5sum -c MachineLearningCSV.md5
+
+"""
+# **Saving the Dataset**
+Save the zip and extracted files to Google Drive at `CICIDS2017` folder.
+"""
+
+!mkdir -p "/content/drive/My Drive/CICIDS2017/"
+
+!cp MachineLearningCVE.zip "/content/drive/My Drive/CICIDS2017/"
+
+"""
+# **Unzip the Dataset**
+Unzip the `MachineLearningCVE.zip`.
+
+There are eight files extracted from this zip file.
+
+
+1.  `Monday-WorkingHours.pcap_ISCX.csv`
+2.  `Tuesday-WorkingHours.pcap_ISCX.csv`
+3.  `Wednesday-workingHours.pcap_ISCX.csv`
+4.  `Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv`
+5.  `Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv`
+6.  `Friday-WorkingHours-Morning.pcap_ISCX.csv`
+7.  `Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv`
+8.  `Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv`
+"""
+
+!unzip -n "/content/drive/My Drive/CICIDS2017/MachineLearningCVE.zip"
+
+
+================================================
+File: src/2) Processing.ipynb
+================================================
+# Jupyter notebook converted to Python script.
+
+"""
+# **2.1 EDA**
+"""
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import missingno as msno
+sns.set(style='darkgrid')
+import matplotlib.pyplot as plt
+
+# Loading the dataset
+data1 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Monday-WorkingHours.pcap_ISCX.csv')
+data2 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Tuesday-WorkingHours.pcap_ISCX.csv')
+data3 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Wednesday-workingHours.pcap_ISCX.csv')
+data4 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv')
+data5 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv')
+data6 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Morning.pcap_ISCX.csv')
+data7 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv')
+data8 = pd.read_csv(r'E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv')
+
+data_list = [data1, data2, data3, data4, data5, data6, data7, data8]
+
+print('Data dimensions: ')
+for i, data in enumerate(data_list, start = 1):
+  rows, cols = data.shape
+  print(f'Data{i} -> {rows} rows, {cols} columns')
+
+data = pd.concat(data_list)
+rows, cols = data.shape
+
+print('New dimension:')
+print(f'Number of rows: {rows}')
+print(f'Number of columns: {cols}')
+print(f'Total cells: {rows * cols}')
+
+# Renaming the columns by removing leading/trailing whitespace
+col_names = {col: col.strip() for col in data.columns}
+data.rename(columns = col_names, inplace = True)
+
+data.columns
+
+data.info()
+
+pd.options.display.max_rows = 80
+
+print('Overview of Columns:')
+data.describe().transpose()
+
+pd.options.display.max_columns = 80
+data
+
+"""
+# **2.2 Data Cleaning**
+"""
+
+# Identifying duplicate values
+dups = data[data.duplicated()]
+print(f'Number of duplicates: {len(dups)}')
+
+data.drop_duplicates(inplace = True)
+data.shape
+
+# Identifying Missing Values
+missing_val = data.isna().sum()
+
+# Checking for infinity values
+numeric_cols = data.select_dtypes(include = np.number).columns
+inf_count = np.isinf(data[numeric_cols]).sum()
+
+# Replacing any infinite values (positive or negative) with NaN (not a number)
+data.replace([np.inf, -np.inf], np.nan, inplace = True)
+missing = data.isna().sum()
+
+# Calculating missing value percentage in the dataset
+mis_per = (missing / len(data)) * 100
+mis_table = pd.concat([missing, mis_per.round(2)], axis = 1)
+mis_table = mis_table.rename(columns = {0 : 'Missing Values', 1 : 'Percentage of Total Values'})
+
+med_flow_bytes = data['Flow Bytes/s'].median()
+med_flow_packets = data['Flow Packets/s'].median()
+
+# Filling missing values with median
+data['Flow Bytes/s'].fillna(med_flow_bytes, inplace = True)
+data['Flow Packets/s'].fillna(med_flow_packets, inplace = True)
+
+"""
+The first step is to identify duplicate rows and missing or invalid values. We identified and dropped the duplicate rows (308381 rows). From the data description, we identified that the dataset has infinity values. So, we checked and replaced the positive or negative infinity values with NaN (not a number) and counted it as a missing value. In the dataset, two features, FlowBytes/s, and Flow Packets/s contain missing values.
+
+Flow Bytes/s and Flow Packets/s are continuous variables. The data is not normally distributed. The variables have extreme values or outliers. So, our strategy is to fill in missing values with median value. Because, filling the missing values with the median does not introduce any new categories or disrupt the distribution of the data.
+"""
+
+"""
+# **2.3 Visualization of column correlation. Also, plotting Heat Map**
+"""
+
+data['Label'].unique()
+
+# Types of attacks & normal instances (BENIGN)
+data['Label'].value_counts()
+
+# Creating a dictionary that maps each label to its attack type
+attack_map = {
+    'BENIGN': 'BENIGN',
+    'DDoS': 'DDoS',
+    'DoS Hulk': 'DoS',
+    'DoS GoldenEye': 'DoS',
+    'DoS slowloris': 'DoS',
+    'DoS Slowhttptest': 'DoS',
+    'PortScan': 'Port Scan',
+    'FTP-Patator': 'Brute Force',
+    'SSH-Patator': 'Brute Force',
+    'Bot': 'Bot',
+    'Web Attack � Brute Force': 'Web Attack',
+    'Web Attack � XSS': 'Web Attack',
+    'Web Attack � Sql Injection': 'Web Attack',
+    'Infiltration': 'Infiltration',
+    'Heartbleed': 'Heartbleed'
+}
+
+# Creating a new column 'Attack Type' in the DataFrame based on the attack_map dictionary
+data['Attack Type'] = data['Label'].map(attack_map)
+
+data['Attack Type'].value_counts()
+
+data.drop('Label', axis = 1, inplace = True)
+
+from sklearn.preprocessing import LabelEncoder
+
+le = LabelEncoder()
+data['Attack Number'] = le.fit_transform(data['Attack Type'])
+
+print(data['Attack Number'].unique())
+
+# Printing corresponding attack type for each encoded value
+encoded_values = data['Attack Number'].unique()
+for val in sorted(encoded_values):
+    print(f"{val}: {le.inverse_transform([val])[0]}")
+
+corr = data.corr(numeric_only = True).round(2)
+corr.style.background_gradient(cmap = 'coolwarm', axis = None).format(precision = 2)
+
+"""
+For plotting the correlation matrix, we encoded the 'Attack Type' column and plotted the heatmap. From the heatmap, we observe that there are many pairs of highly correlated features. Highly correlated features in the dataset are problematic and lead to overfitting. A positive correlation exists when one variable decreases as the other variable decreases or one variable increases while the other increases. There are 32 features with positive correlations that may help in predicting the target feature.
+"""
+
+fig, ax = plt.subplots(figsize = (24, 24))
+sns.heatmap(corr, cmap = 'coolwarm', annot = False, linewidth = 0.5)
+plt.title('Correlation Matrix', fontsize = 18)
+plt.show()
+
+# Checking for columns with zero standard deviation (the blank squares in the heatmap)
+std = data.std(numeric_only = True)
+zero_std_cols = std[std == 0].index.tolist()
+zero_std_cols
+
+"""
+The columns with zero standard deviation have the same value in all rows. These columns don't have any variance. It simply means that there is no meaningful relationship with any other columns which results in NaN correlation cofficient. These columns cannot help differentiate between the classes or groups of data. So, these zero standard deviation columns don't contribute to the correlation matrix and will appear blank in the heatmap. This can be helpful while doing data processing as we may drop the columns if we find out that these columns has no variation.
+"""
+
+"""
+# **3.1 Data Preprocessing**
+"""
+
+'''
+# For improving performance and reduce memory-related errors
+old_memory_usage = data.memory_usage().sum() / 1024 ** 2
+print(f'Initial memory usage: {old_memory_usage:.2f} MB')
+for col in data.columns:
+    col_type = data[col].dtype
+    if col_type != object:
+        c_min = data[col].min()
+        c_max = data[col].max()
+        # Downcasting float64 to float32
+        if str(col_type).find('float') >= 0 and c_min > np.finfo(np.float32).min and c_max < np.finfo(np.float32).max:
+            data[col] = data[col].astype(np.float32)
+
+        # Downcasting int64 to int32
+        elif str(col_type).find('int') >= 0 and c_min > np.iinfo(np.int32).min and c_max < np.iinfo(np.int32).max:
+            data[col] = data[col].astype(np.int32)
+
+new_memory_usage = data.memory_usage().sum() / 1024 ** 2
+print(f"Final memory usage: {new_memory_usage:.2f} MB")
+'''
+
+# Dropping columns with only one unique value
+num_unique = data.nunique()
+one_variable = num_unique[num_unique == 1]
+not_one_variable = num_unique[num_unique > 1].index
+
+dropped_cols = one_variable.index
+data = data[not_one_variable]
+
+print('Dropped columns:')
+dropped_cols
+
+data.shape
+
+"""
+# **3.2 Applying PCA to Reduce Dimensions**
+"""
+
+"""
+A simple and effective way to reduce the dimensionality of the dataset and improve the performance of the model is to use strongly correlated features. We used label encoding on the target feature where the numerical values assigned to each category do not have inherent meaning and they are arbitrary. For this reason, the correlation matrix calculated using label-encoded variables may not accurately reflect the true relationships between the variables.
+"""
+
+# We applied StandardScaler before performing Incremental PCA to standardize the data values into a standard format.
+
+# Standardizing the dataset
+from sklearn.preprocessing import StandardScaler
+
+features = data.drop('Attack Type', axis = 1)
+attacks = data['Attack Type']
+
+scaler = StandardScaler()
+scaled_features = scaler.fit_transform(features)
+
+"""
+Incremental PCA is a variant of PCA that allows for the efficient computation of principal components of a large dataset that cannot be stored in memory.
+"""
+
+from sklearn.decomposition import IncrementalPCA
+
+size = len(features.columns) // 2
+ipca = IncrementalPCA(n_components = size, batch_size = 500)
+
+"""
+Interrupt kernel for below code snippet after 150 seconds
+"""
+
+for batch in np.array_split(scaled_features, len(features) // 500):
+    ipca.partial_fit(batch)
+
+print(f'information retained: {sum(ipca.explained_variance_ratio_):.2%}')
+
+# This code performs dimensionality reduction using Incremental Principal Component Analysis (IPCA).
+# It transforms the scaled feature set into a lower-dimensional space while retaining most of the variance.
+# A new DataFrame is created from the transformed features, with columns labeled as 'PC1', 'PC2', ..., 'PCn'.
+# Additionally, an 'Attack Type' column is added to maintain the context of the data for further analysis.
+
+transformed_features = ipca.transform(scaled_features)
+new_data = pd.DataFrame(transformed_features, columns = [f'PC{i+1}' for i in range(size)])
+new_data['Attack Type'] = attacks.values
+
+new_data
+
+# Specify the file path where you want to save the preprocessed data
+output_path = r"E:/Random Python Scripts/CICIDS/CICIDS2017/preprocessed_data.csv"
+
+# Save the DataFrame as a CSV file
+new_data.to_csv(output_path, index=False)
+
+print(f"Preprocessed data saved successfully at: {output_path}")
+
+
+================================================
+File: src/4.3) DNN_BC_Better.ipynb
+================================================
+# Jupyter notebook converted to Python script.
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import classification_report
+import tensorflow as tf
+from tensorflow import keras
+
+# Check GPU availability and set GPU as default device
+gpus = tf.config.list_physical_devices('GPU')
+if gpus:
+    try:
+        for gpu in gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)  # Enable memory growth for GPUs
+        print(f"Using GPU: {gpus}")
+    except RuntimeError as e:
+        print(f"Error initializing GPU: {e}")
+else:
+    print("No GPU detected, using CPU.")
+# Output:
+#   No GPU detected, using CPU.
+
+
+tf.config.list_physical_devices('GPU')
+# Output:
+#   []
+
+# Load datasets
+file_paths = [
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Monday-WorkingHours.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Tuesday-WorkingHours.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Wednesday-workingHours.pcap_ISCX.csv"
+]
+
+# Concatenate all datasets
+df = pd.concat([pd.read_csv(file) for file in file_paths], ignore_index=True)
+
+# Convert from multi-class to binary classification
+attack_labels = df[' Label'].unique()
+attack_labels = [label for label in attack_labels if label != 'BENIGN']
+df[' Label'].replace(attack_labels, "Attack", inplace=True)
+# Output:
+#   C:\Users\Siddharth\AppData\Local\Temp\ipykernel_7964\14994437.py:4: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+
+#   The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+#   
+
+#   For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+#   
+
+#   
+
+#     df[' Label'].replace(attack_labels, "Attack", inplace=True)
+
+
+# Remove whitespace from column names
+df.columns = [col.strip() for col in df.columns]
+
+# Shuffle dataset
+df = df.sample(frac=1, random_state=8).reset_index(drop=True)
+
+# Encode labels
+y = LabelEncoder().fit_transform(df['Label'])
+
+# Prepare features
+x = df.drop(columns=['Label'], axis=1).astype('float32')
+
+# Handle missing and infinite values
+x.replace([np.inf, -np.inf], np.nan, inplace=True)
+x.fillna(x.mean(), inplace=True)
+x[x < 0] = np.nan
+x.fillna(x.min(), inplace=True)
+
+# Scale features
+scaler = StandardScaler()
+x = pd.DataFrame(scaler.fit_transform(x), index=x.index, columns=x.columns)
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=8, stratify=y)
+
+# Build model function
+def build_model():
+    # Creating layers
+    inputs = keras.layers.Input(shape=(X_train.shape[1],))
+    
+    x = keras.layers.Dense(units=78, activation='relu')(inputs)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Dropout(0.1)(x)
+    
+    x = keras.layers.Dense(units=15, activation='relu')(x)
+    x = keras.layers.BatchNormalization()(x)
+
+    x = keras.layers.Dense(units=7, activation='relu')(x)
+    x = keras.layers.BatchNormalization()(x)
+    
+    x = keras.layers.Dense(units=15, activation='relu')(x)
+    x = keras.layers.BatchNormalization()(x)
+    x = keras.layers.Dropout(0.3)(x)
+    
+    x = keras.layers.Dense(units=35, activation='relu')(x)
+    outputs = keras.layers.Dense(units=2, activation='softmax')(x)
+    
+    model = keras.Model(inputs=inputs, outputs=outputs)
+    model.compile(loss='sparse_categorical_crossentropy', 
+                  optimizer=keras.optimizers.Adam(learning_rate=0.001), 
+                  metrics=['accuracy'])
+    
+    return model
+
+early_stop = tf.keras.callbacks.EarlyStopping(monitor='accuracy', patience=5)
+
+model = build_model()
+
+# Display model summary
+model.summary()
+# Output:
+#   [1mModel: "functional"[0m
+
+#   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+
+#   ┃[1m [0m[1mLayer (type)                        [0m[1m [0m┃[1m [0m[1mOutput Shape               [0m[1m [0m┃[1m [0m[1m        Param #[0m[1m [0m┃
+
+#   ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+
+#   │ input_layer ([38;5;33mInputLayer[0m)             │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │               [38;5;34m0[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense ([38;5;33mDense[0m)                        │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │           [38;5;34m6,162[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization                  │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │             [38;5;34m312[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dropout ([38;5;33mDropout[0m)                    │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │               [38;5;34m0[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_1 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │           [38;5;34m1,185[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization_1                │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │              [38;5;34m60[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_2 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m7[0m)                   │             [38;5;34m112[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization_2                │ ([38;5;45mNone[0m, [38;5;34m7[0m)                   │              [38;5;34m28[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_3 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │             [38;5;34m120[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization_3                │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │              [38;5;34m60[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dropout_1 ([38;5;33mDropout[0m)                  │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │               [38;5;34m0[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_4 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m35[0m)                  │             [38;5;34m560[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_5 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m2[0m)                   │              [38;5;34m72[0m │
+
+#   └──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+
+#   [1m Total params: [0m[38;5;34m8,671[0m (33.87 KB)
+
+#   [1m Trainable params: [0m[38;5;34m8,441[0m (32.97 KB)
+
+#   [1m Non-trainable params: [0m[38;5;34m230[0m (920.00 B)
+
+
+# Train model
+model.fit(X_train, 
+          y_train, 
+          epochs=100, 
+          batch_size=128, 
+          validation_split=0.2, 
+          verbose=1, 
+          callbacks=[early_stop]
+         )
+# Output:
+#   Epoch 1/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m53s[0m 4ms/step - accuracy: 0.9568 - loss: 0.1017 - val_accuracy: 0.9745 - val_loss: 0.0500
+
+#   Epoch 2/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m43s[0m 4ms/step - accuracy: 0.9749 - loss: 0.0549 - val_accuracy: 0.9791 - val_loss: 0.0469
+
+#   Epoch 3/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m83s[0m 4ms/step - accuracy: 0.9787 - loss: 0.0478 - val_accuracy: 0.9769 - val_loss: 0.0481
+
+#   Epoch 4/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9831 - loss: 0.0388 - val_accuracy: 0.9913 - val_loss: 0.0275
+
+#   Epoch 5/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m49s[0m 4ms/step - accuracy: 0.9859 - loss: 0.0339 - val_accuracy: 0.9895 - val_loss: 0.0254
+
+#   Epoch 6/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m41s[0m 3ms/step - accuracy: 0.9866 - loss: 0.0318 - val_accuracy: 0.9889 - val_loss: 0.0247
+
+#   Epoch 7/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m41s[0m 3ms/step - accuracy: 0.9868 - loss: 0.0317 - val_accuracy: 0.9892 - val_loss: 0.0231
+
+#   Epoch 8/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9877 - loss: 0.0288 - val_accuracy: 0.9880 - val_loss: 0.0276
+
+#   Epoch 9/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9872 - loss: 0.0305 - val_accuracy: 0.9891 - val_loss: 0.0236
+
+#   Epoch 10/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9890 - loss: 0.0262 - val_accuracy: 0.9905 - val_loss: 0.0275
+
+#   Epoch 11/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m46s[0m 4ms/step - accuracy: 0.9891 - loss: 0.0257 - val_accuracy: 0.9896 - val_loss: 0.0258
+
+#   Epoch 12/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m50s[0m 4ms/step - accuracy: 0.9909 - loss: 0.0230 - val_accuracy: 0.9888 - val_loss: 0.0247
+
+#   Epoch 13/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9894 - loss: 0.0256 - val_accuracy: 0.9948 - val_loss: 0.0183
+
+#   Epoch 14/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m46s[0m 4ms/step - accuracy: 0.9902 - loss: 0.0253 - val_accuracy: 0.9805 - val_loss: 0.0416
+
+#   Epoch 15/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m84s[0m 4ms/step - accuracy: 0.9902 - loss: 0.0245 - val_accuracy: 0.9951 - val_loss: 0.0168
+
+#   Epoch 16/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9922 - loss: 0.0207 - val_accuracy: 0.9827 - val_loss: 0.0419
+
+#   Epoch 17/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m46s[0m 4ms/step - accuracy: 0.9917 - loss: 0.0215 - val_accuracy: 0.9896 - val_loss: 0.0253
+
+#   Epoch 18/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m83s[0m 4ms/step - accuracy: 0.9906 - loss: 0.0234 - val_accuracy: 0.9881 - val_loss: 0.0356
+
+#   Epoch 19/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m46s[0m 4ms/step - accuracy: 0.9919 - loss: 0.0209 - val_accuracy: 0.9908 - val_loss: 0.0235
+
+#   Epoch 20/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9918 - loss: 0.0208 - val_accuracy: 0.9896 - val_loss: 0.0254
+
+#   Epoch 21/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9908 - loss: 0.0228 - val_accuracy: 0.9915 - val_loss: 0.0248
+
+#   <keras.src.callbacks.history.History at 0x23815c14730>
+
+# Evaluate the model
+loss, accuracy = model.evaluate(X_test, y_test, verbose=0)
+print(f"Test Loss: {loss}")
+print(f"Test Accuracy: {accuracy}")
+
+# Classification report
+y_pred = model.predict(X_test)
+y_pred_classes = np.argmax(y_pred, axis=1)
+print(classification_report(y_test, y_pred_classes))
+# Output:
+#   Test Loss: 0.025916405022144318
+
+#   Test Accuracy: 0.9911613464355469
+
+#   [1m26539/26539[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m53s[0m 2ms/step
+
+#                 precision    recall  f1-score   support
+
+#   
+
+#              0       0.96      0.99      0.98    167294
+
+#              1       1.00      0.99      0.99    681929
+
+#   
+
+#       accuracy                           0.99    849223
+
+#      macro avg       0.98      0.99      0.99    849223
+
+#   weighted avg       0.99      0.99      0.99    849223
+
+#   
+
+
+# Save the model
+model.save("DNN_BC.h5")
+print("Model saved successfully.")
+# Output:
+#   WARNING:absl:You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+
+#   Model saved successfully.
+
+
+
+================================================
+File: src/4.4) DNN_MC_Better.ipynb
+================================================
+# Jupyter notebook converted to Python script.
+
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.model_selection import train_test_split
+
+# Load datasets
+file_paths = [
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Friday-WorkingHours-Morning.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Monday-WorkingHours.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Tuesday-WorkingHours.pcap_ISCX.csv",
+    r"E:/Random Python Scripts/CICIDS/CICIDS2017/MachineLearningCVE/Wednesday-workingHours.pcap_ISCX.csv"
+]
+
+# Concatenate all datasets
+df = pd.concat([pd.read_csv(file) for file in file_paths], ignore_index=True)
+
+# Standardize the labels
+df[' Label'].replace("Web.*", "Web Attack", regex=True, inplace=True)
+df[' Label'].replace(r'.*Patator$', "Brute Force", regex=True, inplace=True)
+df[' Label'].replace(["DoS GoldenEye", "DoS Hulk", "DoS Slowhttptest", "DoS slowloris"], "DDoS/DoS", inplace=True)
+df[' Label'].replace("DDoS", "DDoS/DoS", inplace=True)
+df[' Label'].replace("Heartbleed", "DDoS/DoS", inplace=True)
+# Output:
+#   C:\Users\Siddharth\AppData\Local\Temp\ipykernel_20632\3007350651.py:2: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+
+#   The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+#   
+
+#   For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+#   
+
+#   
+
+#     df[' Label'].replace("Web.*", "Web Attack", regex=True, inplace=True)
+
+#   C:\Users\Siddharth\AppData\Local\Temp\ipykernel_20632\3007350651.py:3: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+
+#   The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+#   
+
+#   For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+#   
+
+#   
+
+#     df[' Label'].replace(r'.*Patator$', "Brute Force", regex=True, inplace=True)
+
+#   C:\Users\Siddharth\AppData\Local\Temp\ipykernel_20632\3007350651.py:4: FutureWarning: A value is trying to be set on a copy of a DataFrame or Series through chained assignment using an inplace method.
+
+#   The behavior will change in pandas 3.0. This inplace method will never work because the intermediate object on which we are setting values always behaves as a copy.
+
+#   
+
+#   For example, when doing 'df[col].method(value, inplace=True)', try using 'df.method({col: value}, inplace=True)' or df[col] = df[col].method(value) instead, to perform the operation inplace on the original object.
+
+#   
+
+#   
+
+#     df[' Label'].replace(["DoS GoldenEye", "DoS Hulk", "DoS Slowhttptest", "DoS slowloris"], "DDoS/DoS", inplace=True)
+
+
+# Remove whitespace from column names
+df.columns = [col.strip() for col in df.columns]
+
+# Shuffle the dataset
+df = df.sample(frac=1, random_state=8).reset_index(drop=True)
+
+# Encode labels
+y = LabelEncoder().fit_transform(df['Label'])
+
+# Drop the label column and preprocess the features
+x = df.drop(columns=['Label'], axis=1).astype('float32')
+
+# Save preprocessed features and labels as a CSV file
+preprocessed_df = pd.concat([x, pd.Series(y, name='Label')], axis=1)
+preprocessed_df.to_csv("preprocessed_data.csv", index=False)
+print("Preprocessed data saved as 'preprocessed_data.csv'.")
+
+# Handle missing and infinite values
+x.replace([np.inf, -np.inf], np.nan, inplace=True)
+x.fillna(x.mean(), inplace=True)
+x[x < 0] = np.nan
+x.fillna(x.min(), inplace=True)
+
+# Scale the features
+scaler = StandardScaler()
+x = pd.DataFrame(scaler.fit_transform(x), index=x.index, columns=x.columns)
+
+# Train-test split
+X_train, X_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=8, stratify=y)
+
+
+from tensorflow.keras.models import Model
+from tensorflow.keras.layers import Input, Dense, BatchNormalization, Dropout
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.callbacks import EarlyStopping
+from sklearn.metrics import classification_report
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Define the architecture
+def build_model(input_dim, num_classes):
+    # Creating layers
+    inputs = Input(shape=(input_dim,))
+
+    x = Dense(units=input_dim, activation='relu')(inputs)  # Level one
+    x = BatchNormalization()(x)
+    x = Dropout(0.1)(x)
+
+    x = Dense(units=15, activation='relu')(x)  # Level two
+    x = BatchNormalization()(x)
+
+    x = Dense(units=7, activation='relu')(x)  # Bottleneck
+    x = BatchNormalization()(x)
+
+    x = Dense(units=15, activation='relu')(x)  # Level two
+    x = BatchNormalization()(x)
+    x = Dropout(0.3)(x)
+
+    x = Dense(units=35, activation='relu')(x)  # Level one
+    outputs = Dense(num_classes, activation='softmax')(x)
+
+    model = Model(inputs=inputs, outputs=outputs)
+
+    model.compile(
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy'],
+        optimizer=Adam(learning_rate=0.001)
+    )
+    return model
+
+# Early stopping
+early_stop = EarlyStopping(monitor='accuracy', patience=5)
+
+# Initialize the model
+input_dim = X_train.shape[1]
+num_classes = len(np.unique(y_train))
+model = build_model(input_dim, num_classes)
+
+# Display model summary
+model.summary()
+# Output:
+#   [1mModel: "functional"[0m
+
+#   ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━┓
+
+#   ┃[1m [0m[1mLayer (type)                        [0m[1m [0m┃[1m [0m[1mOutput Shape               [0m[1m [0m┃[1m [0m[1m        Param #[0m[1m [0m┃
+
+#   ┡━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━┩
+
+#   │ input_layer ([38;5;33mInputLayer[0m)             │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │               [38;5;34m0[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense ([38;5;33mDense[0m)                        │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │           [38;5;34m6,162[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization                  │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │             [38;5;34m312[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dropout ([38;5;33mDropout[0m)                    │ ([38;5;45mNone[0m, [38;5;34m78[0m)                  │               [38;5;34m0[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_1 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │           [38;5;34m1,185[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization_1                │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │              [38;5;34m60[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_2 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m7[0m)                   │             [38;5;34m112[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization_2                │ ([38;5;45mNone[0m, [38;5;34m7[0m)                   │              [38;5;34m28[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_3 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │             [38;5;34m120[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ batch_normalization_3                │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │              [38;5;34m60[0m │
+
+#   │ ([38;5;33mBatchNormalization[0m)                 │                             │                 │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dropout_1 ([38;5;33mDropout[0m)                  │ ([38;5;45mNone[0m, [38;5;34m15[0m)                  │               [38;5;34m0[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_4 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m35[0m)                  │             [38;5;34m560[0m │
+
+#   ├──────────────────────────────────────┼─────────────────────────────┼─────────────────┤
+
+#   │ dense_5 ([38;5;33mDense[0m)                      │ ([38;5;45mNone[0m, [38;5;34m7[0m)                   │             [38;5;34m252[0m │
+
+#   └──────────────────────────────────────┴─────────────────────────────┴─────────────────┘
+
+#   [1m Total params: [0m[38;5;34m8,851[0m (34.57 KB)
+
+#   [1m Trainable params: [0m[38;5;34m8,621[0m (33.68 KB)
+
+#   [1m Non-trainable params: [0m[38;5;34m230[0m (920.00 B)
+
+
+# Train the model with EarlyStopping
+history = model.fit(
+    X_train, y_train,
+    validation_split=0.2,
+    epochs=100,
+    batch_size=128,
+    callbacks=[early_stop],
+    verbose=1
+)
+# Output:
+#   Epoch 1/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m55s[0m 4ms/step - accuracy: 0.9500 - loss: 0.1499 - val_accuracy: 0.9733 - val_loss: 0.0580
+
+#   Epoch 2/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m86s[0m 4ms/step - accuracy: 0.9754 - loss: 0.0588 - val_accuracy: 0.9756 - val_loss: 0.0449
+
+#   Epoch 3/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m49s[0m 4ms/step - accuracy: 0.9835 - loss: 0.0428 - val_accuracy: 0.9846 - val_loss: 0.0404
+
+#   Epoch 4/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m45s[0m 4ms/step - accuracy: 0.9870 - loss: 0.0348 - val_accuracy: 0.9874 - val_loss: 0.0312
+
+#   Epoch 5/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9866 - loss: 0.0352 - val_accuracy: 0.9882 - val_loss: 0.0279
+
+#   Epoch 6/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m82s[0m 4ms/step - accuracy: 0.9880 - loss: 0.0307 - val_accuracy: 0.9876 - val_loss: 0.0291
+
+#   Epoch 7/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9881 - loss: 0.0308 - val_accuracy: 0.9901 - val_loss: 0.0258
+
+#   Epoch 8/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m79s[0m 3ms/step - accuracy: 0.9890 - loss: 0.0290 - val_accuracy: 0.9892 - val_loss: 0.0299
+
+#   Epoch 9/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m41s[0m 3ms/step - accuracy: 0.9899 - loss: 0.0273 - val_accuracy: 0.9930 - val_loss: 0.0227
+
+#   Epoch 10/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9904 - loss: 0.0266 - val_accuracy: 0.9940 - val_loss: 0.0181
+
+#   Epoch 11/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9903 - loss: 0.0261 - val_accuracy: 0.9849 - val_loss: 0.0376
+
+#   Epoch 12/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m44s[0m 4ms/step - accuracy: 0.9905 - loss: 0.0260 - val_accuracy: 0.9900 - val_loss: 0.0341
+
+#   Epoch 13/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m46s[0m 4ms/step - accuracy: 0.9909 - loss: 0.0251 - val_accuracy: 0.9918 - val_loss: 0.0286
+
+#   Epoch 14/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m83s[0m 4ms/step - accuracy: 0.9911 - loss: 0.0250 - val_accuracy: 0.9864 - val_loss: 0.0487
+
+#   Epoch 15/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m46s[0m 4ms/step - accuracy: 0.9911 - loss: 0.0250 - val_accuracy: 0.9809 - val_loss: 0.0527
+
+#   Epoch 16/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9903 - loss: 0.0265 - val_accuracy: 0.9928 - val_loss: 0.0190
+
+#   Epoch 17/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m77s[0m 3ms/step - accuracy: 0.9905 - loss: 0.0259 - val_accuracy: 0.9865 - val_loss: 0.0299
+
+#   Epoch 18/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m45s[0m 4ms/step - accuracy: 0.9907 - loss: 0.0254 - val_accuracy: 0.9946 - val_loss: 0.0294
+
+#   Epoch 19/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9903 - loss: 0.0258 - val_accuracy: 0.9940 - val_loss: 0.0205
+
+#   Epoch 20/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m48s[0m 4ms/step - accuracy: 0.9915 - loss: 0.0237 - val_accuracy: 0.9796 - val_loss: 0.0570
+
+#   Epoch 21/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9914 - loss: 0.0238 - val_accuracy: 0.9912 - val_loss: 0.0221
+
+#   Epoch 22/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9910 - loss: 0.0240 - val_accuracy: 0.9949 - val_loss: 0.0205
+
+#   Epoch 23/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9910 - loss: 0.0243 - val_accuracy: 0.9945 - val_loss: 0.0180
+
+#   Epoch 24/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m50s[0m 4ms/step - accuracy: 0.9909 - loss: 0.0243 - val_accuracy: 0.9920 - val_loss: 0.0224
+
+#   Epoch 25/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m49s[0m 4ms/step - accuracy: 0.9914 - loss: 0.0234 - val_accuracy: 0.9925 - val_loss: 0.0193
+
+#   Epoch 26/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m48s[0m 4ms/step - accuracy: 0.9917 - loss: 0.0232 - val_accuracy: 0.9933 - val_loss: 0.0312
+
+#   Epoch 27/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9919 - loss: 0.0232 - val_accuracy: 0.9866 - val_loss: 0.0332
+
+#   Epoch 28/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m50s[0m 4ms/step - accuracy: 0.9905 - loss: 0.0251 - val_accuracy: 0.9902 - val_loss: 0.0305
+
+#   Epoch 29/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m82s[0m 4ms/step - accuracy: 0.9912 - loss: 0.0244 - val_accuracy: 0.9913 - val_loss: 0.0225
+
+#   Epoch 30/100
+
+#   [1m12385/12385[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m47s[0m 4ms/step - accuracy: 0.9913 - loss: 0.0240 - val_accuracy: 0.9929 - val_loss: 0.0184
+
+
+# Evaluate the model
+loss, accuracy = model.evaluate(X_test, y_test, verbose=0)
+print(f"Test Loss: {loss}")
+print(f"Test Accuracy: {accuracy}")
+
+# Classification report
+y_pred = model.predict(X_test)
+y_pred_classes = np.argmax(y_pred, axis=1)
+print(classification_report(y_test, y_pred_classes))
+# Output:
+#   Test Loss: 0.01958256959915161
+
+#   Test Accuracy: 0.9930630922317505
+
+#   [1m26539/26539[0m [32m━━━━━━━━━━━━━━━━━━━━[0m[37m[0m [1m53s[0m 2ms/step
+
+#   C:\Users\Siddharth\anaconda3\envs\cicids\lib\site-packages\sklearn\metrics\_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+
+#     _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+#   C:\Users\Siddharth\anaconda3\envs\cicids\lib\site-packages\sklearn\metrics\_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+
+#     _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+#   C:\Users\Siddharth\anaconda3\envs\cicids\lib\site-packages\sklearn\metrics\_classification.py:1531: UndefinedMetricWarning: Precision is ill-defined and being set to 0.0 in labels with no predicted samples. Use `zero_division` parameter to control this behavior.
+
+#     _warn_prf(average, modifier, f"{metric.capitalize()} is", len(result))
+
+#                 precision    recall  f1-score   support
+
+#   
+
+#              0       0.99      1.00      1.00    681929
+
+#              1       0.90      0.35      0.50       590
+
+#              2       0.98      0.95      0.97      4150
+
+#              3       1.00      0.97      0.98    114210
+
+#              4       0.00      0.00      0.00        11
+
+#              5       0.99      1.00      1.00     47679
+
+#              6       0.00      0.00      0.00       654
+
+#   
+
+#       accuracy                           0.99    849223
+
+#      macro avg       0.69      0.61      0.63    849223
+
+#   weighted avg       0.99      0.99      0.99    849223
+
+#   
+
+
+# Save the model
+model.save("DNN_MC.h5")
+print("Model saved successfully.")
+# Output:
+#   WARNING:absl:You are saving your model as an HDF5 file via `model.save()` or `keras.saving.save_model(model)`. This file format is considered legacy. We recommend using instead the native Keras format, e.g. `model.save('my_model.keras')` or `keras.saving.save_model(model, 'my_model.keras')`. 
+
+#   Model saved successfully.
+
+
+
